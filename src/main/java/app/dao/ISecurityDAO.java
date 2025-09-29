@@ -11,7 +11,7 @@ public interface ISecurityDAO {
     User createUser(String username, String password, String email, String fullName, Integer phone);
     Role createRole(String role);
     User addRoleToUser(String username, String role);
-    User create();
+    //User create();
     User update(User user);
     User UpdateUser(String name, String password, Set<Role> roles);
     List<User> getAlleUser();
