@@ -16,7 +16,7 @@
             <token.expiration.time>3600000</token.expiration.time>
             <db.name>week3</db.name>
             <db.username>postgres</db.username>
-            <db.password>postgres</db.password>
+            <db.password>!Velkommen</db.password>
             <db.connection.string>jdbc:postgresql://localhost:5432/</db.connection.string>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
