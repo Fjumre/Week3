@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.junit.experimental.categories.Category;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -70,8 +73,5 @@ public class Product {
 
     @Column(name= "rating", nullable= false)
     private float rating;
-
-
-
 
 }

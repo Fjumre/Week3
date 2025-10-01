@@ -10,10 +10,10 @@ import java.util.Set;
 public interface ISecurityDAO {
     User createUser(String username, String password, String email, String fullName, Integer phone);
     Role createRole(String role);
-    User addRoleToUser(String username, String role);
+    User addRoleToUser(String username, String roleName);
     //User create();
     User update(User user);
-    User UpdateUser(String name, String password, Set<Role> roles);
+    User UpdateUser(String username, String password, Set<Role> roles);
     List<User> getAlleUser();
     User getUserById(int id);
     void deleteUser(int id);
