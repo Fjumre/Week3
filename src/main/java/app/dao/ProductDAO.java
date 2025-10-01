@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 
+import java.util.List;
+
 public class ProductDAO {
 
     private EntityManagerFactory emf;
@@ -67,7 +69,17 @@ public class ProductDAO {
         }
     }
 
-
+    public List<Product> getAllProducts(){
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+        }  catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            em.close();
+        }
+    }
 
 
     @RolesAllowed("ADMIN")
