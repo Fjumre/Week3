@@ -17,7 +17,7 @@ public class ProductDAO {
         this.emf = emf;
     }
 
-    @RolesAllowed("ADMIN")
+    @RolesAllowed("admin")
     public Product createProduct(Product product){
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx= em.getTransaction();
@@ -82,7 +82,7 @@ public class ProductDAO {
     }
 
 
-    @RolesAllowed("ADMIN")
+    @RolesAllowed("admin")
     public  void updateProduct(Product product){
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx= em.getTransaction();
@@ -99,7 +99,7 @@ public class ProductDAO {
         }
     }
 
-    @RolesAllowed("ADMIN")
+    @RolesAllowed("admin")
     public void deleteProduct(int pId){
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx= em.getTransaction();
@@ -117,7 +117,7 @@ public class ProductDAO {
         }
     }
 
-    @RolesAllowed("ADMIN")
+    @RolesAllowed("admin")
     public void deleteProductByName(String name){
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx= em.getTransaction();

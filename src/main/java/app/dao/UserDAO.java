@@ -6,6 +6,7 @@ import app.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 import java.util.Set;
@@ -133,6 +134,25 @@ public class UserDAO implements ISecurityDAO {
     @Override
     public User UpdatePassword(User user, String newPassword) {
         return null;
+    }
+    public User verifyUser(String username, String password) throws EntityNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        try {
+            // Using JPQL to query by username
+            User user = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+
+            if (!user.verifyUser(password)) {
+                throw new EntityNotFoundException("Wrong password");
+            }
+            return user;
+        } catch (NoResultException e) {
+            throw new EntityNotFoundException("No user found with that username: " + username);
+        } finally {
+            em.close();
+        }
     }
 
 }
