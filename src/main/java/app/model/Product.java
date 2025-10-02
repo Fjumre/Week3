@@ -1,18 +1,7 @@
 package app.model;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.junit.experimental.categories.Category;
-
-import java.util.HashSet;
-import java.util.Set;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
 @Setter
@@ -23,17 +12,20 @@ import java.util.Set;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment
     @Column(name= "pId", nullable= false, unique= true)
-    private String pId;
+    private int pId;
 
-    @Column(name= "name", nullable= false)
+    @Column(name= "name", unique = true, nullable= false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name= "mfr", nullable= false)
-    private Category mfr;
+    private Manufacturer mfr;
 
+    @Enumerated(EnumType.STRING)
     @Column(name= "type", nullable= false)
-    private Category type;
+    private ProductType type;
 
     @Column(name= "calories", nullable= false)
     private int calories;
@@ -73,5 +65,6 @@ public class Product {
 
     @Column(name= "rating", nullable= false)
     private float rating;
+
 
 }

@@ -154,5 +154,16 @@ public class UserDAO implements ISecurityDAO {
             em.close();
         }
     }
-
+    public User findByUsername(String username) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM User u WHERE u.username = :u", User.class)
+                    .setParameter("u", username)
+                    .getResultStream()
+                    .findFirst()
+                    .orElse(null);
+        } finally {
+            em.close();
+        }
+    }
 }

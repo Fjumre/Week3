@@ -1,7 +1,7 @@
 package app.controllers;
 
-import java.util.logging.Handler;
 
+import io.javalin.http.Handler;
 public interface IProductController {
 
     Handler createProduct();
