@@ -24,10 +24,9 @@ public class UserController implements IUserController{
 
     private UserDAO userDAO = new UserDAO(HibernateConfig.getEntityManagerFactory());
     ObjectMapper objectMapper = new ObjectMapper();
-    //UserDTO userDTO= new UserDTO();
-    // User user= new User();
+    User user= new User();
     EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-   
+
 
 
     public UserController(UserDAO userDAO) {
