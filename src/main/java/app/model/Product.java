@@ -21,11 +21,11 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(name= "mfr", nullable= false)
-    private Manufacturer mfr;
+    private String mfr;
 
     @Enumerated(EnumType.STRING)
     @Column(name= "type", nullable= false)
-    private ProductType type;
+    private String type;
 
     @Column(name= "calories", nullable= false)
     private int calories;
