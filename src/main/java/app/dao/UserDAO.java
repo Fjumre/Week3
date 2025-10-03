@@ -55,30 +55,6 @@ public class UserDAO implements ISecurityDAO {
         return null;
     }
 
-    @Override
-    public User addRoleToUser(String username, String roleName) {
-        EntityManager em = emf.createEntityManager();
-
-        User user;
-        try {
-            em.getTransaction().begin();
-            user = em.find(User.class, username);
-            Role role = em.find(Role.class, roleName);
-
-            user.addRole(role); // Modify the collection in the managed entity
-
-            em.merge(user); // Ensure changes are cascaded to the database
-
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new RuntimeException("Failed to add role to user due to: " + e.getMessage(), e);
-        }
-
-        return user;
-    }
 
     @Override
     public User update(User user) {
@@ -106,10 +82,6 @@ public class UserDAO implements ISecurityDAO {
         return user;
     }
 
-    @Override
-    public List<User> getAlleUser() {
-        return List.of();
-    }
 
     @Override
     public User getUserById(int id) {
@@ -121,10 +93,7 @@ public class UserDAO implements ISecurityDAO {
         }
     }
 
-    @Override
-    public void deleteUser(int id) {
 
-    }
 
     @Override
     public User verifyUserForReset(String email, String password) throws EntityNotFoundException {
@@ -162,6 +131,59 @@ public class UserDAO implements ISecurityDAO {
                     .getResultStream()
                     .findFirst()
                     .orElse(null);
+        } finally {
+            em.close();
+        }
+    }
+    public User addRoleToUser(String username, String roleName) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            User user = em.createQuery("SELECT u FROM User u WHERE u.username = :u", User.class)
+                    .setParameter("u", username)
+                    .getSingleResult();
+
+            Role role = em.find(Role.class, roleName); // PK is roleName
+            if (role == null) {
+                role = new Role(roleName);
+                em.persist(role);
+            }
+
+            user.addRole(role); // links both sides
+            em.merge(user);     // persist join row
+            em.getTransaction().commit();
+            return user;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw new RuntimeException("Failed to add role: " + e.getMessage(), e);
+        } finally {
+            em.close();
+        }
+    }
+
+
+    @Override
+    public List<User> getAlleUser() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+
+    @Override
+    public void deleteUser(int id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            User u = em.find(User.class, id);
+            if (u != null) em.remove(u);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw new RuntimeException("Delete failed: " + e.getMessage(), e);
         } finally {
             em.close();
         }
