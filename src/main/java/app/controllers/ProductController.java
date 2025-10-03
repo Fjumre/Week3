@@ -4,6 +4,7 @@ import app.dao.ProductDAO;
 import app.model.Product;
 import io.javalin.http.Handler;
 
+//Controllers are used for HTTP/Endpoints
 public class ProductController implements IProductController {
 
     private final ProductDAO dao;

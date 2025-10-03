@@ -85,7 +85,7 @@ public class Endpoints {
             put("/update/{id}", userController.updateUser(), RouteRoles.USER, RouteRoles.ADMIN);
             delete("/delete/{id}", userController.deleteUser(), RouteRoles.USER, RouteRoles.ADMIN);
 
-            // Optional username-based endpoints (uncomment if using)
+            // Username-based endpoints (uncomment if using)
             // get("/u/{username}", userController.getUserByUsername(), RouteRoles.USER, RouteRoles.ADMIN);
             // put("/u/{username}", userController.updateUserByUsername(), RouteRoles.USER, RouteRoles.ADMIN);
 

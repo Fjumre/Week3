@@ -18,8 +18,8 @@ import java.util.Set;
 public class ProductDTO {
 
     private String name;
-    private Category mfr;
-    private Category type;
+    private String mfr;
+    private String type;
     private int calories;
     private int protein;
     private int fat;

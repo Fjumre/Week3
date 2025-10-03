@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+//DAO are used for CRUD/Database
 public class ProductDAO {
 
     private final EntityManagerFactory emf;
