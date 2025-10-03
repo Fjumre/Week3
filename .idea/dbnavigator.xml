@@ -14,6 +14,9 @@
       <assistant-state connection-id="d563746e-2dce-43bf-a887-c4412f704cb3" default-profile-name="" selected-conversation-id="" assistant-type="GENERIC" availability="UNAVAILABLE" acknowledgement="NONE">
         <conversations />
       </assistant-state>
+      <assistant-state connection-id="258c56b9-84d4-4f78-952b-ecba26f7ddd5" default-profile-name="" selected-conversation-id="" assistant-type="GENERIC" availability="UNAVAILABLE" acknowledgement="NONE">
+        <conversations />
+      </assistant-state>
     </assistants>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -24,8 +27,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="d563746e-2dce-43bf-a887-c4412f704cb3">
-      <console name="Connection" type="STANDARD" schema="dbc" session="Main"><![CDATA[CREATE DATABASE dbc CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE dbc;
+      <console name="Connection" type="STANDARD" schema="dbc" session="Main"><![CDATA[USE dbc;
   
 
 CREATE TABLE IF NOT EXISTS products (
@@ -70,9 +72,80 @@ CREATE TABLE IF NOT EXISTS user_roles (
     FOREIGN KEY (user_id)  REFERENCES users(id)       ON DELETE CASCADE,
   CONSTRAINT fk_user_roles_role
     FOREIGN KEY (roleName) REFERENCES roles(roleName) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;]]></console>
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+LOAD DATA LOCAL INFILE 'C:\Users\SPAC-49\Desktop\Cereal(in).csv'
+INTO TABLE products
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(pId, name, mfr, type, calories, protein, fat, sodium, fiber, carbo, sugars, potass, vitamins, shelf, weight, cups, rating);
+
+
+SELECT * FROM products LIMIT 10;]]></console>
     </connection>
     <connection id="258c56b9-84d4-4f78-952b-ecba26f7ddd5">
+      <console name="Cc" type="STANDARD" schema="dbc" session="Main"><![CDATA[USE dbc;
+SELECT DATABASE();
+  
+
+CREATE TABLE IF NOT EXISTS products (
+  pId      INT PRIMARY KEY,
+  name     VARCHAR(255) NOT NULL UNIQUE,
+  mfr      VARCHAR(10)  NOT NULL,
+  type     VARCHAR(10)  NOT NULL,
+  calories INT NOT NULL,
+  protein  INT NOT NULL,
+  fat      INT NOT NULL,
+  sodium   INT NOT NULL,
+  fiber    FLOAT NOT NULL,
+  carbo    FLOAT NOT NULL,
+  sugars   INT NOT NULL,
+  potass   INT NOT NULL,
+  vitamins INT NOT NULL,
+  shelf    INT NOT NULL,
+  weight   FLOAT NOT NULL,
+  cups     FLOAT NOT NULL,
+  rating   DECIMAL(10,6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS roles (
+  roleName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (roleName)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS users (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  username  VARCHAR(40)  NOT NULL UNIQUE,
+  password  VARCHAR(60)  NOT NULL,         -- BCrypt = 60 chars
+  email     VARCHAR(100) NOT NULL UNIQUE,
+  fullName  VARCHAR(100) NOT NULL,
+  phone     INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS user_roles (
+  user_id  INT         NOT NULL,
+  roleName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (user_id, roleName),
+  CONSTRAINT fk_user_roles_user
+    FOREIGN KEY (user_id)  REFERENCES users(id)       ON DELETE CASCADE,
+  CONSTRAINT fk_user_roles_role
+    FOREIGN KEY (roleName) REFERENCES roles(roleName) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+LOAD DATA LOCAL INFILE 'C:/Users/SPAC-49/Desktop/Cereal(in).csv'
+INTO TABLE products
+CHARACTER SET utf8mb4
+FIELDS TERMINATED BY ';'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES
+(pId, name, mfr, type, calories, protein, fat, sodium, fiber, carbo, sugars, potass, vitamins, shelf, weight, cups, rating);
+
+
+SELECT * FROM products LIMIT 10;]]></console>
       <console name="Connection 1" type="STANDARD" schema="mysql" session="Main" />
     </connection>
   </component>
@@ -208,7 +281,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
           <description value="" />
           <database-type value="MYSQL" />
           <config-type value="BASIC" />
-          <database-version value="9999.0" />
+          <database-version value="8.0" />
           <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />
@@ -226,7 +299,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
           <token-type value="" />
           <token-config-file value="" />
           <token-profile value="" />
-          <session-user value="" />
+          <session-user value="root@localhost" />
         </database>
         <properties>
           <auto-commit value="false" />
