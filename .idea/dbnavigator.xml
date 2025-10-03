@@ -79,7 +79,7 @@ LOAD DATA LOCAL INFILE 'C:\Users\SPAC-49\Desktop\Cereal(in).csv'
 INTO TABLE products
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ';'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
 (pId, name, mfr, type, calories, protein, fat, sodium, fiber, carbo, sugars, potass, vitamins, shelf, weight, cups, rating);
 
