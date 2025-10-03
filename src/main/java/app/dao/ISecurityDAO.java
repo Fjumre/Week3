@@ -16,7 +16,7 @@ public interface ISecurityDAO {
     User UpdateUser(String username, String password, Set<Role> roles);
     List<User> getAlleUser();
     User getUserById(int id);
-    void deleteUser(int id);
+    boolean deleteUser(int id);
     User verifyUserForReset(String email, String password) throws EntityNotFoundException;
     User UpdatePassword(User user, String newPassword);
 }

@@ -172,15 +172,19 @@ public class UserDAO implements ISecurityDAO {
         }
     }
 
-
     @Override
-    public void deleteUser(int id) {
+    public boolean deleteUser(int id) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
             User u = em.find(User.class, id);
-            if (u != null) em.remove(u);
+            if (u == null) {
+                em.getTransaction().rollback();
+                return false;
+            }
+            em.remove(u);
             em.getTransaction().commit();
+            return true;
         } catch (Exception e) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw new RuntimeException("Delete failed: " + e.getMessage(), e);

@@ -69,17 +69,15 @@ public class UserController implements IUserController {
     @Override
     public Handler getUserById() {
         return ctx -> {
-            ObjectNode ret = objectMapper.createObjectNode();
             try {
                 int userId = Integer.parseInt(ctx.pathParam("id"));
                 User user = userDAO.getUserById(userId);
-                if (user == null) {
-                    ctx.status(404).json(ret.put("msg", "User not found"));
-                } else {
-                    ctx.json(new UserDTO(user));
-                }
+                if (user == null) ctx.status(404).json(Map.of("msg", "User not found"));
+                else ctx.json(new UserDTO(user));
+            } catch (NumberFormatException nfe) {
+                ctx.status(400).json(Map.of("msg", "Invalid id"));
             } catch (Exception e) {
-                ctx.status(500).json(ret.put("msg", "Internal server error"));
+                ctx.status(500).json(Map.of("msg", "Internal server error"));
             }
         };
     }
@@ -116,13 +114,18 @@ public class UserController implements IUserController {
     @Override
     public Handler deleteUser() {
         return ctx -> {
-            ObjectNode ret = objectMapper.createObjectNode();
             try {
                 int userId = Integer.parseInt(ctx.pathParam("id"));
-                userDAO.deleteUser(userId);
-                ctx.status(HttpStatus.NO_CONTENT);
+                boolean ok = userDAO.deleteUser(userId);
+                if (ok) {
+                    ctx.status(HttpStatus.NO_CONTENT); // 204, no body
+                } else {
+                    ctx.status(HttpStatus.NOT_FOUND).json(Map.of("msg", "User not found"));
+                }
+            } catch (NumberFormatException nfe) {
+                ctx.status(HttpStatus.BAD_REQUEST).json(Map.of("msg", "Invalid id"));
             } catch (Exception e) {
-                ctx.status(500).json(ret.put("msg", "Internal server error: " + e.getMessage()));
+                ctx.status(500).json(Map.of("msg", "Internal server error: " + e.getMessage()));
             }
         };
     }
